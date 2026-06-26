@@ -5,8 +5,10 @@ import com.firstclub.membership.dto.SubscriptionRequest;
 import com.firstclub.membership.model.MembershipPlan;
 import com.firstclub.membership.model.MembershipTier;
 import com.firstclub.membership.service.MembershipService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,12 +32,12 @@ public class MembershipController {
     }
 
     @PostMapping("/subscribe")
-    public MembershipDetails subscribe(@RequestBody SubscriptionRequest subscriptionRequest) {
+    public MembershipDetails subscribe(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
         return membershipService.subscribe(subscriptionRequest);
     }
 
     @PutMapping("/upgrade")
-    public MembershipDetails upgradeSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
+    public MembershipDetails upgradeSubscription(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
         return membershipService.upgradeSubscription(subscriptionRequest);
     }
 
@@ -52,5 +54,10 @@ public class MembershipController {
     @GetMapping("/{userId}")
     public MembershipDetails getMembershipDetails(@PathVariable Long userId) {
         return membershipService.getMembershipDetails(userId);
+    }
+    @PostMapping("/admin/evaluate-tiers")
+    public ResponseEntity<String> evaluateTiers() {
+        membershipService.evaluateAndUpgradeTiers();
+        return ResponseEntity.ok("Successfully evaluated and updated membership tiers.");
     }
 }

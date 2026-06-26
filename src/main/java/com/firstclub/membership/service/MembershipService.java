@@ -15,4 +15,5 @@ public interface MembershipService {
     MembershipDetails downgradeSubscription(SubscriptionRequest subscriptionRequest);
     void cancelSubscription(Long userId);
     MembershipDetails getMembershipDetails(Long userId);
+    void evaluateAndUpgradeTiers();
 }
